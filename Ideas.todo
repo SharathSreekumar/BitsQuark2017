@@ -1,0 +1,46 @@
+Candidate Ideas:
+  ☐ Put in location, auto complete- search, shows you cheapest time of the year to go to that place via API @critical
+  ☐ Look at the top destinations to go to and find the cheapest time to visit it
+  ☐ Travel Seasonability : Volume of traffic, find when there is less crowd visiting a place. @high
+  ✔ Using City Pair Lookup API, find the cities where you can stopover when you are taking connecting flights. For a long stopover, you can get suggestions of things to do/sites to visit in that particular City. @critical @done (16-02-05 17:09)
+
+
+  API names:
+    ☐ Travel Seasonability API
+    ☐ Top Destinations API  @high
+    ☐ Countries Lookup
+    ☐ City Pair Lookup API
+    ☐ Low fare History API
+    ☐ Theme Airport Lookup API
+    ☐ 
+
+
+  Top Data API:
+    ✔ Put 2 letter country code @done (16-02-05 17:10)
+    ✔ Get destinations to visit in that country via rank @done (16-02-05 17:10)
+
+
+    Layout of the app: 
+      ☐ Landing page: Source,Destination, Theme (Optional)    @critical
+
+
+       ☐ Theme (drop down including Sabre Top Dest API ) or OTHERS - optional
+      ☐ Take destination, query country and use Top Destinations API to find cool places in that country
+      ☐ using travel Seasonality API, query which dates the location is crowded/rushed or not  @high
+          filter out the start and end dates using landing page dates
+      ☐ Use own dates or choose optimal dates provided by Travel Seasonality API 
+      ☐ find cheapest booking using FLights TO API   @low
+      ☐ Find other interests apart from main theme to do
+       ☐ OR if no theme then automatically suggest things to do based on number of days of travel (user input)
+        ☐ Integrate Google Maps to show places around
+       ☐ Using GoIbibo API find hotels
+
+       PART 2 :    @critical
+         ☐ STUCK? Stopover? find location using mobile and input approx hours
+         ☐ using alogorithm, suggest things to do based on number of hours available
+
+
+Enhanced features (Stretch Goals):
+  ☐ Display an image with city name when displaying search results
+  ☐ Graph of Travel Seasonality
+  ☐ 
