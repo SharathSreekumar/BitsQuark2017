@@ -140,19 +140,26 @@ AIRPORTS = {
 	'WGC'=>'Warangal,Warangal Airport (WGC)'
 }
 
+$url_domain = 'https://api.test.sabre.com'
+$auth_data_file = 'json/auth_data.json'
+$auth_api_file = 'json/auth_bits.json'
+$authorization = "bearer T1RLAQJ0MqUAAJ39yhTrBCImMIe4lYjt1xC7C62diUkS+27XIJmxigjgAADAhAM5dg+n3zlrP0/hwwN/yQIqnR5lsvggY+kYELKD4n7hAYZ4xF+FJrOQl7bX+9MJVMMZbt4zvPWPRaQssmt2aWfEgM2PrCDYpfbeaCrKNWB4O8xsDXIfBIW3f46KC/skpBki5wuTDKBtrzGADXW/Ydk6lOfvZEcBiwCdBhVC8TkSQex6QGEhi1/HMj+aF0K75zMljm7rNsbLD+a11zju66g7YKcWEYtNxgYE60UMhCZELxZ+LZlqTIfCxOZnT9y+"
+#$airport_filepath = 'json/airports.json'
+$country_filepath = 'json/countries.json' # Location of the countries file
+$theme_filepath = 'json/themes.json' # Location of the themes file
 $ap_input = "BOM"
 $theme_input = "shopping"
 #$number_of_results = "10"
 
 get '/' do
-
 	@data = Hash.new
 	@data = AIRPORTS
+	#@data = File.read($airport_filepath)
 
-	destinatn = File.read('countries.json')
+	destinatn = File.read($country_filepath)
 	@dataD = JSON.parse(destinatn)
-	
-	theme = File.read('themes.json')
+
+	theme = File.read($theme_filepath)
 	@dataT = JSON.parse(theme)
 	@checkDest = 0
 	@costDest = 0
@@ -161,17 +168,20 @@ get '/' do
 end
 
 post '/' do
+	#puts "inside post"
 	@searchBox = params[:Source]
 	@themeBox = params[:Theme]
-	url = 'https://api.test.sabre.com/v1/lists/top/destinations?'
+	puts @searchBox
+	url = $url_domain + '/v1/lists/top/destinations?'
 	origin_ap = "origin="+ @searchBox		#creates parameter to be appended to URL for origin airport
 	td = "&topdestinations=10"
 	theme = "&theme=" + @themeBox#$theme_input
 	uri = URI(url+origin_ap+td+theme)
-	headers = { "Authorization" => "bearer T1RLAQIcT4MC9FDXdjJsd8NZeuNFliMHXRCRbQK6j7gCnt/xHUnIreshAACg4rAuxyaAj9kApEYKPZa006sBD/Xk4WPVM8hAm15qSsU8XTKMirgynzZFS2F6kdZagoxm6zWFQmJqG5GnAOpgZfvGtqY6z0x24e1c0h+gvYe8gOgslXkdvOFETcPSp0FHGFWe2m9qXnqSIXqe7YwQiL1GMzb75VHG+xQxm1dQ5O+JCMTBLkDyFIzIQWU79wrSzZZqnzJxtIZez5ZqmFL/yg**"}
+	#puts url+origin_ap+td+theme
+	headers = { "Authorization" => $authorization}
 	user = HTTParty.get(uri, :headers => headers)
 	i = JSON.parse(user.to_json)
-
+	puts i.key?("Destinations")
 	# puts i["Destinations"][1].class
 	# puts i["Destinations"][1]["Destination"]["CityName"]
 	# puts i["Destinations"][1]["Destination"].class
@@ -179,20 +189,26 @@ post '/' do
 	# for z in 0..9
 	# 	if i["Destinations"][z]["Destination"]["CityName"] == nil
 	# 		puts i["Destinations"][z]["Destination"]["CountryName"]
-	# 	else	
+	# 	else
 	# 		puts i["Destinations"][z]["Destination"]["CityName"]
 	# 	end
 	# end
 
 	@data = Hash.new
 	@data = AIRPORTS
+	#@data = File.read($airport_filepath)
 
-	theme = File.read('themes.json')
+	theme = File.read($theme_filepath)
 	@dataT = JSON.parse(theme)
-	@checkDest = 0
 	@costDest = 0
-	@checkDest = 1
-	@dataD = i["Destinations"]
+	if i.key?("Destinations")
+		@dataD = i["Destinations"]
+		@checkDest = 1
+	else
+		destinatn = File.read($country_filepath)
+		@dataD = JSON.parse(destinatn)
+		@checkDest = 0
+	end
 	erb :index
 end
 
@@ -201,16 +217,17 @@ get '/cost' do
 
 	@data = Hash.new
 	@data = AIRPORTS
+	#@data = File.read($airport_filepath)
 
-	destinatn = File.read('countries.json')
+	destinatn = File.read($country_filepath)
 	@dataD = JSON.parse(destinatn)
-	
-	theme = File.read('themes.json')
+
+	theme = File.read($theme_filepath)
 	@dataT = JSON.parse(theme)
 	@checkDest = 0
 	@costDest = 0
 
-	url = 'https://api.test.sabre.com/v1/shop/flights/cheapest/fares/'+ costBox
+	url = $url_domain + '/v1/shop/flights/cheapest/fares/'+ costBox
 	uri = URI(url)
 	headers = { "Authorization" => "Bearer T1RLAQIcT4MC9FDXdjJsd8NZeuNFliMHXRCRbQK6j7gCnt/xHUnIreshAACg4rAuxyaAj9kApEYKPZa006sBD/Xk4WPVM8hAm15qSsU8XTKMirgynzZFS2F6kdZagoxm6zWFQmJqG5GnAOpgZfvGtqY6z0x24e1c0h+gvYe8gOgslXkdvOFETcPSp0FHGFWe2m9qXnqSIXqe7YwQiL1GMzb75VHG+xQxm1dQ5O+JCMTBLkDyFIzIQWU79wrSzZZqnzJxtIZez5ZqmFL/yg**"}
 	userC = HTTParty.get(uri, :headers => headers)
@@ -218,4 +235,67 @@ get '/cost' do
 	@costDest = 1
 	@dataC = j["FareInfo"]
 	erb :index
+end
+
+
+get '/v2/api/top-destinations' do # APi to get top destinations
+	@searchBox = params[:source]
+	@themeBox = params[:theme]
+	#puts @searchBox
+	url = $url_domain + '/v1/lists/top/destinations?'
+	origin_ap = "origin="+ @searchBox		#creates parameter to be appended to URL for origin airport
+	td = "&topdestinations=10"
+	theme = "&theme=" + @themeBox#$theme_input
+	uri = URI(url+origin_ap+td+theme)
+	#puts url+origin_ap+td+theme
+	headers = { "Authorization" => $authorization}
+	destination = HTTParty.get(uri, :headers => headers)
+	i = JSON.parse(destination.to_json)
+
+	if i.key?("Destinations")
+		return destination.to_json#render json: destination.to_json
+	else
+		msg = { :status => "400", :message => "Failed"}
+		return msg.to_json#render :json => msg
+	end
+end
+
+get '/v2/api/travel-themes' do ## API to get the Top Travel Themes
+	url = $url_domain + '/v1/lists/supported/shop/themes/'
+	uri = URI(url)
+	headers = { "Authorization" => $authorization}
+	themes = HTTParty.get(uri, :headers => headers)
+	i = JSON.parse(themes.to_json)
+	if i.key?("Themes")
+		return themes.to_json
+	else
+		msg = { :status => "400", :message => "Failed"}
+		return msg.to_json
+	end
+end
+
+get '/v2/api/auth' do ## API to generate new Access_Token
+	require "base64" ## This dependency is added here as it is not needed in any other function
+	
+	user_detail = File.read($auth_data_file)
+	@details = JSON.parse(user_detail)
+	client_id = Base64.encode64(@details[0]['client_id'])
+	client_secret = Base64.encode64(@details[0]['client_secret'])
+
+	auth_access_key = Base64.encode64(client_id + ':' + client_secret) # Base64(Base64(client_id) + ':' + Base64(client_secret))
+
+	url = $url_domain + '/v2/auth/token'
+	uri = URI(url)
+	headers = {"Authorization" => "Basic ", "Content-Type" => "application/x-www-form-urlencoded", "Accept" => "*/*"}
+	body = {"grant_type" => "client_credentials"}.to_json
+	access_permission = HTTParty(uri, :headers => headers, :body => body)
+	if access_permission.key?("access_token") ##Checks if the exist in the data received
+		File.write($auth_api_file, access_permission) ## Access_token exist, then store the new token
+		puts "wrote"
+	else ## Continue with the old token
+		access_permission = File.read($auth_api_file)
+		access_permission = JSON.parse(access_permission)
+	end
+
+	$authorization = access_permission['token_type'] + ' ' + access_permission["access_token"] ## Assign the new/old API auth to the Global variable
 end

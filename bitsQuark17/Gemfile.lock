@@ -16,7 +16,7 @@ GEM
     multi_xml (0.5.5)
     net (0.3.3)
       activesupport
-    openssl (0.2.0)
+    openssl (2.0.3)
     rack (1.6.4)
     rack-protection (1.5.3)
       rack

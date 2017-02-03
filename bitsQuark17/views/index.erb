@@ -23,7 +23,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-            
+
            <a class="navbar-brand" href="#"><img src="images/airbus.jpg" style="margin-top:-10px;width:180px" alt="brand"></a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -48,21 +48,21 @@
 							</div>
     					</div>
     					<div class="col-md-4 col-xs-12">
-            				<label for="exampleInputEmail1">Destination</label>
+            	  <label for="exampleInputEmail1">Destination</label>
     						<div class="dropdown">
     							<select name="Destination" id="dest" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"  style="width:100%">
 									<option value="null">-- Select Destination --</option>
 									<% @dataD.each do |i| %>
-                                        <% if @checkDest == 0 %>
-										    <option value=<%= i["Code"]%>><%= i["Name"] %></option>
-                                        <% elsif @checkDest == 1 %>
-                                                <% puts i["Destination"]["CityName"].class %>
-                                                <% if i["Destination"]["CityName"] == nil %>
-                                                    <option value=<%= i["Destination"]["DestinationLocation"] %>><%= i["Destination"]["CountryName"] %></option>
-                                                <% else %>
-                                                    <option value=<%= i["Destination"]["DestinationLocation"] %>><%= i["Destination"]["CityName"] %></option>
-                                                <% end %> <!-- if-else -->
-                                        <% end %><!-- if-elsif -->
+                    <% if @checkDest == 0 %>
+										  <option value=<%= i["Code"]%>><%= i["Name"] %></option>
+                    <% elsif @checkDest == 1 %>
+                      <% puts i["Destination"]["CityName"].class %>
+                      <% if i["Destination"]["CityName"] == nil %>
+                        <option value=<%= i["Destination"]["DestinationLocation"] %>><%= i["Destination"]["CountryName"] %></option>
+                      <% else %>
+                        <option value=<%= i["Destination"]["DestinationLocation"] %>><%= i["Destination"]["CityName"] %></option>
+                      <% end %> <!-- if-else -->
+                    <% end %><!-- if-elsif -->
 									<% end %><!-- @data.each -->
 								</select>
 							</div>
