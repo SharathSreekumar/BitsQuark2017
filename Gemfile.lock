@@ -25,7 +25,6 @@ GEM
     net (0.3.3)
       activesupport
     netrc (0.11.0)
-    openssl (2.0.0)
     rack (1.6.4)
     rack-protection (1.5.3)
       rack
@@ -55,7 +54,6 @@ DEPENDENCIES
   httparty
   json
   net
-  openssl
   sacs_ruby
   sinatra
 
