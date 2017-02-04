@@ -274,6 +274,16 @@ get '/v2/api/travel-themes' do ## API to get the Top Travel Themes
 	end
 end
 
+get '/v2/api/countries-list' do # retrieves a list of origin and destination countries
+	url = $url_domain + '/v1/lists/supported/countries?'
+	pointofsalecountry = 'pointofsalecountry=' + params[:countrycode]
+	uri = URI(url + pointofsalecountry)
+	headers = { "Authorization" => $authorization }
+	country_list = HTTParty.get(uri, :headers => headers)
+	i = JSON.parse(country_list.to_json)
+	return country_list.to_json
+end
+
 get '/v2/api/auth' do ## API to generate new Access_Token
 	require "base64" ## This dependency is added here as it is not needed in any other function
 
