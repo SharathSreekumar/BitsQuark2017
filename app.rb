@@ -145,6 +145,7 @@ $auth_data_file = 'json/auth_data.json'
 $auth_api_file = 'json/auth_bits.json'
 $authorization = "bearer T1RLAQJ0MqUAAJ39yhTrBCImMIe4lYjt1xC7C62diUkS+27XIJmxigjgAADAhAM5dg+n3zlrP0/hwwN/yQIqnR5lsvggY+kYELKD4n7hAYZ4xF+FJrOQl7bX+9MJVMMZbt4zvPWPRaQssmt2aWfEgM2PrCDYpfbeaCrKNWB4O8xsDXIfBIW3f46KC/skpBki5wuTDKBtrzGADXW/Ydk6lOfvZEcBiwCdBhVC8TkSQex6QGEhi1/HMj+aF0K75zMljm7rNsbLD+a11zju66g7YKcWEYtNxgYE60UMhCZELxZ+LZlqTIfCxOZnT9y+"
 #$airport_filepath = 'json/airports.json'
+$india_airports = 'json/indian_airports.json'
 $country_filepath = 'json/countries.json' # Location of the countries file
 $theme_filepath = 'json/themes.json' # Location of the themes file
 $ap_input = "BOM"
@@ -282,6 +283,11 @@ get '/v2/api/countries-list' do # retrieves a list of origin and destination cou
 	country_list = HTTParty.get(uri, :headers => headers)
 	i = JSON.parse(country_list.to_json)
 	return country_list.to_json
+end
+
+get '/v2/api/airports' do
+		airport = File.read($india_airports)
+		return airport
 end
 
 get '/v2/api/auth' do ## API to generate new Access_Token
