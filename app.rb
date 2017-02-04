@@ -2,7 +2,7 @@ require 'sinatra'
 require 'json'
 require 'net/http'
 require 'open-uri'
-require 'openssl'
+#require 'openssl'
 require 'httparty'
 require 'resolv-replace'
 
@@ -276,7 +276,7 @@ end
 
 get '/v2/api/auth' do ## API to generate new Access_Token
 	require "base64" ## This dependency is added here as it is not needed in any other function
-	
+
 	user_detail = File.read($auth_data_file)
 	@details = JSON.parse(user_detail)
 	client_id = Base64.encode64(@details[0]['client_id'])
